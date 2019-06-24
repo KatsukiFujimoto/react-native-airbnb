@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { StatusBar, View, BackHandler } from 'react-native';
 import { addNavigationHelpers, StackNavigator, TabNavigator, NavigationActions } from 'react-navigation';
 
-import ListTab from '../components/ListTab';
-import UserTab from '../components/UserTab';
+import ExploreTab from '../components/MainScreen/ExploreTab';
+import ProfileTab from '../components/MainScreen/ProfileTab';
 import DetailScreen from '../components/DetailScreen';
 
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -32,17 +32,17 @@ const tabConfig = {
 }
 
 export const MainScreen = TabNavigator({
-  List: {
-    screen: ListTab,
+  Explore: {
+    screen: ExploreTab,
     navigationOptions: {
-      tabBarLabel: 'LIST',
-      tabBarIcon: ({focused, tintColor}) => <Icon name={'ios-list'} size={30} color={tintColor}/>
+      tabBarLabel: 'EXPLORE',
+      tabBarIcon: ({focused, tintColor}) => <Icon name={'ios-search'} size={30} color={tintColor}/>
     }
   },
-  User: {
-    screen: UserTab,
+  Profile: {
+    screen: ProfileTab,
     navigationOptions: {
-      tabBarLabel: 'USER',
+      tabBarLabel: 'PROFILE',
       tabBarIcon: ({focused, tintColor}) => <Icon name={'ios-person'} size={30} color={tintColor}/>
     }
   },
@@ -52,7 +52,7 @@ export const AppNavigator = StackNavigator({
   Main: {
     screen: MainScreen,
     navigationOptions: {
-      title: 'Code4Startup',
+      header: null,
     }
   },
   Detail: {
@@ -63,7 +63,7 @@ export const AppNavigator = StackNavigator({
   },
 });
 
-class AppWithNavigationState extends Component {
+class AppWithNavigationState extends React.Component {
 
   componentDidMount() {
     BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
@@ -87,7 +87,7 @@ class AppWithNavigationState extends Component {
     return (
       <View style={{ flex: 1 }}>
         <StatusBar backgroundColor="#000"/>
-        <AppNavigator navigation={addNavigationHelpers({ dispatch: dispatch, state: nav })} />
+        <AppNavigator navigation={addNavigationHelpers({ dispatch, state: nav })} />
       </View>
     );
   }

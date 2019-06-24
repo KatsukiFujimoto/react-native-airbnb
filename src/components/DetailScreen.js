@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   },
 });
 
-class DetailScreen extends Component {
+class DetailScreen extends React.Component {
   render() {
     const item = this.props.navigation.state.params.item;
     return (

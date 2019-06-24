@@ -7,7 +7,7 @@ import {
   Button,
 } from 'react-native';
 
-import { login, logout } from '../actions/user';
+import { login, logout } from '../../actions/user';
 
 const styles = StyleSheet.create({
   container: {
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
   },
 });
 
-class UserTab extends Component {
+class ProfileTab extends React.Component {
 
   state = {
     name: ''
@@ -66,4 +66,4 @@ const mapDispatchToProps = dispatch => ({
   logout: () => dispatch(logout()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserTab);
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileTab);
