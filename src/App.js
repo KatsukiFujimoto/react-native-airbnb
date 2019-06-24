@@ -4,7 +4,7 @@ import configureStore from './configureStore';
 import { Provider } from 'react-redux';
 import AppWithNavigationState from './navigators/AppNavigator';
 
-export default class App extends Component {
+export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
