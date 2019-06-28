@@ -11,6 +11,7 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import GodzillaButton from '../Shared/GodzillaButton';
 import { getRoom } from '../../actions/room';
+import { navigate } from '../../actions/nav';
 
 const styles = StyleSheet.create({
   container: {
@@ -66,6 +67,10 @@ class RoomScreen extends React.Component {
     this.props.getRoom(selectedRoomId);
   }
 
+  onCheckAvailability() {
+    this.props.navigate({ routeName: 'Booking' });
+  }
+
   render() {
     const room = this.props.room
     if (!room) return null;
@@ -113,7 +118,7 @@ class RoomScreen extends React.Component {
             <Text style={{fontWeight: 'bold'}}>{`$${price}`}</Text> per night
           </Text>
           <GodzillaButton
-            onPress={ () => {alert("Check Availability")} }
+            onPress={ () => this.onCheckAvailability() }
             backgroundColor='#ff5a60'
             textColor='white'
             label='Check Availability'
@@ -130,6 +135,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   getRoom: (roomId) => dispatch(getRoom(roomId)),
+  navigate: (route) => dispatch(navigate(route)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RoomScreen);

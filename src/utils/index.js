@@ -24,7 +24,7 @@ export function normalizeRoom(room) {
     price: room.price || '',
     instant: room.instant || '',
     summary: room.summary || '',
-    accomodate: room.accomodate || '',
+    accommodate: room.accommodate || '',
     bathRoom: room.bath_room || '',
     unavailableDates: room.unavailable_dates|| '',
     host: room.host ? {
