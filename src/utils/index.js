@@ -38,3 +38,11 @@ export function normalizeRoom(room) {
     }
   }
 }
+
+export function normalizeProfile (email, fullname, image) {
+  return {
+    email: email || '',
+    fullname: fullname || '',
+    avatar: image || '',
+  }
+}
