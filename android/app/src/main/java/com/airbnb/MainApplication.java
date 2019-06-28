@@ -12,6 +12,7 @@ import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
+import com.gettipsi.stripe.StripeReactPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -34,9 +35,10 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new ReactNativeConfigPackage(),
+          new ReactNativeConfigPackage(),
           new FBSDKPackage(mCallbackManager),
-          new VectorIconsPackage()
+          new VectorIconsPackage(),
+          new StripeReactPackage()
       );
     }
 

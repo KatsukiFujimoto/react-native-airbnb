@@ -3,72 +3,104 @@ import { connect } from 'react-redux';
 import {
   StyleSheet,
   View,
-  TextInput,
-  Button,
   Text,
+  ScrollView,
+  Image,
+  TouchableOpacity,
 } from 'react-native';
 
-import { login, logout } from '../../actions/user';
+import { logout, addPayment } from '../../actions/user';
+import stripe from 'tipsi-stripe'
+import Config from 'react-native-config';
+
+stripe.setOptions({
+  publishableKey: Config.STRIPE_PUBLISHABLE_KEY,
+  androidPayMode: 'test',
+});
+
+const options = {
+  smsAutofillDisabled: true,
+  requiredBillingAddressFields: 'full',
+}
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
     padding: 20,
-  },
-  input: {
     backgroundColor: 'white',
-    height: 60,
-    padding: 20,
-    borderRadius: 3,
-    marginBottom: 10,
+  },
+  profile: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  name: {
+    flex: 1,
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#555',
+  },
+  avatar: {
+    width: 80,
+    height: 80,
+    borderRadius: 80,
+  },
+  menuButton: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#e2e2e2',
+    paddingVertical: 20,
+  },
+  menuButtonText: {
+    fontSize: 20,
   },
 });
 
 class ProfileTab extends React.Component {
 
-  state = {
-    name: ''
+  addPayment = async() => {
+    const token = await stripe.paymentRequestWithCardForm(options);
+    this.props.addPayment(token.tokenId);
+  }
+
+  switchType() {
+
   }
 
   render() {
-    const { accessToken, login, logout, profile } = this.props;
+    const profile = this.props.profile || {}
+    const payment = this.props.payment;
 
     return (
-      <View style={styles.container}>
-        {
-          !accessToken
-          ?
-          <View>
-            <TextInput
-              style={styles.input}
-              placeholder="What's your name?"
-              onChangeText={(name) => this.setState({ name })}/>
-            <Button
-              title='Login'
-              onPress={() => login(this.state.name)}/>
-          </View>
-          :
-          <View>
-            <Text>{profile.fullname}</Text>
-            <Button
-              title='Logout'
-              onPress={() => logout()}/>
-          </View>
-        }
-      </View>
+      <ScrollView style={styles.container}>
+        <View style={styles.profile}>
+          <Text style={styles.name}>{profile.fullname}</Text>
+          <Image style={styles.avatar} source={{ uri:  profile.avatar }} />
+        </View>
+
+        <TouchableOpacity
+          onPress={ () => this.addPayment().catch(e => console.log(e)) }
+          style={styles.menuButton}>
+          <Text>{`${payment ? 'Update' : 'Add'}`} Your Payment</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={ () => this.switchType() } style={styles.menuButton}>
+          <Text>Switch To Host</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={ () => this.props.logout() } style={styles.menuButton}>
+          <Text>Log Out</Text>
+        </TouchableOpacity>
+      </ScrollView>
     );
   }
 }
 
 const mapStateToProps = state => ({
-  accessToken: state.user.accessToken,
   profile: state.user.profile,
+  payment: state.user.payment,
 });
 
 const mapDispatchToProps = dispatch => ({
-  login: (name) => dispatch(login(name)),
   logout: () => dispatch(logout()),
+  addPayment: (stripeToken) => dispatch(addPayment(stripeToken)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileTab);
