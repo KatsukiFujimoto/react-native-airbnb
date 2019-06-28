@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 
 import { logout, addPayment } from '../../actions/user';
+import { resetRoute } from '../../actions/nav';
 import stripe from 'tipsi-stripe'
 import Config from 'react-native-config';
 
@@ -61,12 +62,18 @@ class ProfileTab extends React.Component {
   }
 
   switchType() {
+    const { resetRoute, firstRouteName } = this.props;
 
+    if (firstRouteName === 'Main') {
+      resetRoute({ routeName: 'Host' });
+    } else {
+      resetRoute({ routeName: 'Main' });
+    }
   }
 
   render() {
     const profile = this.props.profile || {}
-    const payment = this.props.payment;
+    const { payment, firstRouteName } = this.props;
 
     return (
       <ScrollView style={styles.container}>
@@ -82,7 +89,7 @@ class ProfileTab extends React.Component {
         </TouchableOpacity>
 
         <TouchableOpacity onPress={ () => this.switchType() } style={styles.menuButton}>
-          <Text>Switch To Host</Text>
+          <Text>Switch To {`${firstRouteName === 'Main' ? 'Host' : 'Guest'}`}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={ () => this.props.logout() } style={styles.menuButton}>
@@ -96,11 +103,13 @@ class ProfileTab extends React.Component {
 const mapStateToProps = state => ({
   profile: state.user.profile,
   payment: state.user.payment,
+  firstRouteName: state.nav.routes[0].routeName,
 });
 
 const mapDispatchToProps = dispatch => ({
   logout: () => dispatch(logout()),
   addPayment: (stripeToken) => dispatch(addPayment(stripeToken)),
+  resetRoute: (route) => dispatch(resetRoute(route)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileTab);

@@ -46,7 +46,7 @@ class AuthenticationScreen extends React.Component {
   componentWillMount() {
     const { resetRoute, accessToken } = this.props;
     if (accessToken) {
-      resetRoute({ routeName: 'Main' });
+      resetRoute({ routeName: 'Host' });
     }
   }
 
