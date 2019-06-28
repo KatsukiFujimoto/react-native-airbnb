@@ -8,6 +8,7 @@ import ProfileTab from '../components/MainScreen/ProfileTab';
 import RoomScreen from '../components/RoomScreen';
 import AuthenticationScreen from '../components/AuthenticationScreen';
 import FilterModal from '../components/FilterModal';
+import BookingModal from '../components/BookingModal';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -71,6 +72,16 @@ export const AppNavigator = StackNavigator({
   },
   Filter: {
     screen: FilterModal,
+    navigationOptions: {
+      headerStyle: {
+        backgroundColor: '#007b7f',
+        elevation: 0,
+      },
+      headerTintColor: '#e2e2e2',
+    }
+  },
+  Booking: {
+    screen: BookingModal,
     navigationOptions: {
       headerStyle: {
         backgroundColor: '#007b7f',
