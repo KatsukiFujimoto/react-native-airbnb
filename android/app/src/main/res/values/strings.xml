@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">airbnb</string>
+    <string name="app_name">AirGodzilla</string>
+    <string name="facebook_app_id">@string/FACEBOOK_APP_ID</string>
 </resources>
