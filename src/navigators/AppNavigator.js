@@ -5,10 +5,12 @@ import { addNavigationHelpers, StackNavigator, TabNavigator, NavigationActions }
 
 import ExploreTab from '../components/MainScreen/ExploreTab';
 import ProfileTab from '../components/MainScreen/ProfileTab';
+import CalendarTab from '../components/HostScreen/CalendarTab';
 import RoomScreen from '../components/RoomScreen';
 import AuthenticationScreen from '../components/AuthenticationScreen';
 import FilterModal from '../components/FilterModal';
 import BookingModal from '../components/BookingModal';
+import CalendarModal from '../components/CalendarModal';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -51,6 +53,44 @@ export const MainScreen = TabNavigator({
   },
 }, tabConfig);
 
+export const CalendarStack = StackNavigator({
+  CalendarTab: {
+    screen: CalendarTab,
+    navigationOptions: {
+      header: null,
+    }
+  },
+  CalendarModal: {
+    screen: CalendarModal,
+    navigationOptions: (props) => ({
+      title: props.navigation.state.params.item.title,
+    })
+  },
+});
+
+export const HostScreen = TabNavigator({
+  Calendar: {
+    screen: CalendarStack,
+    navigationOptions: {
+      tabBarLabel: 'CALENDAR',
+      tabBarIcon: ({focused, tintColor}) => <Icon name={'ios-calendar'} size={30} color={tintColor}/>
+    }
+  },
+  Profile: {
+    screen: ProfileTab,
+    navigationOptions: {
+      tabBarLabel: 'PROFILE',
+      tabBarIcon: ({focused, tintColor}) => <Icon name={'ios-person'} size={30} color={tintColor}/>
+    }
+  },
+}, {
+  ...tabConfig,
+  tabBarOptions: {
+    ...tabConfig.tabBarOptions,
+    activeTintColor: '#007b7f'
+  }
+});
+
 export const AppNavigator = StackNavigator({
   Authentication: {
     screen: AuthenticationScreen,
@@ -88,6 +128,12 @@ export const AppNavigator = StackNavigator({
         elevation: 0,
       },
       headerTintColor: '#e2e2e2',
+    }
+  },
+  Host: {
+    screen: HostScreen,
+    navigationOptions: {
+      header: null,
     }
   },
 });
