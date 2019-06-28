@@ -1,8 +1,13 @@
-import { SET_ROOMS, SET_ROOM } from '../actions/room';
+import { SET_ROOMS, SET_ROOM, SET_FILTER, setFilter } from '../actions/room';
 
 const initialState = {
   rooms: [],
   room: null,
+  filter: {
+    address: '',
+    startDate: '',
+    endDate: ''
+  }
 };
 
 export default function(state = initialState, action) {
@@ -17,6 +22,13 @@ export default function(state = initialState, action) {
     return {
       ...state,
       room: action.room
+    }
+  }
+
+  if (action.type === SET_FILTER) {
+    return {
+      ...state,
+      filter: action.filter
     }
   }
 
